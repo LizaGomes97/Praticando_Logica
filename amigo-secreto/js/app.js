@@ -1,17 +1,7 @@
-//inserir nomes de amigos no campo inserir amigo
-// nome é adicionado a lista amigos incluidos apos clicar no botao adicionar
-
-//botao sortear gera uma relaçao de quem vai dar presente a quem
-//cada pessoa so pode ser tirada uma vez
-
-//botao reiniciar recomeça o programa
-
-//lista de amigos
 let lista = [];
 let nomesSorteadosLista = [];
 
 function capturandoElementos() {
-  //campo input nome do amigo
   let nomeAmigo = document.querySelector("#nome-amigo");
   let listaAmigos = document.querySelector("#lista-amigos");
 
@@ -32,7 +22,6 @@ function adicionar() {
 
   if (nomeAmigo != "") {
     lista.push(nomeAmigo);
-    // console.log(lista);
   } else {
     alert("Por favor, digite um nome");
   }
@@ -45,29 +34,72 @@ function adicionar() {
 }
 
 function sortear() {
+  console.log(lista);
+
+  embaralha(lista);
+  console.log("lista embaralhada", lista);
+
   let elementos = capturandoElementos();
-  let listaSorteada = nomesSorteadosLista;
+  let elementoListaSorteio = elementos.listaSorteio;
 
-  function sorteandoIndice() {
-    for (i = 0; i < lista.length; i++) {
-      return (indice = Math.floor(Math.random() * lista.length + i));
-    }
+  elementoListaSorteio.innerHTML = "";
+  nomesSorteadosLista = [];
+
+  if (lista.length < 3) {
+    alert("Insira ao menos 3 nomes para o sorteio");
+    return;
   }
-  let indiceSorteado = sorteandoIndice();
-  console.log(indiceSorteado);
 
-  nomeSorteado = lista[indiceSorteado];
+  for (let i = 0; i < lista.length; i++) {
+    let quemTira = lista[i];
+    let quemRecebe;
 
-  console.log("lista:", lista);
-  console.log("nome sorteado:", nomeSorteado);
-  console.log("lista sorteada", listaSorteada);
+    if (i < lista.length - 1) {
+      let indiceValido = false;
+      let indiceSorteado;
 
-  if (nomeSorteado != listaSorteada.includes(nomeSorteado)) {
-    nomesSorteadosLista.push(nomeSorteado);
-    console.log("lista sorteada dentro do if", listaSorteada);
+      while (!indiceValido) {
+        indiceSorteado = Math.floor(Math.random() * lista.length);
 
-    // for (i = 0; i < lista.length; i++) {
-    //   listaSorteada.innerHTML = nomesSorteadosLista.join(" - ");
-    // }
+        if (
+          indiceSorteado !== i &&
+          !nomesSorteadosLista.includes(lista[indiceSorteado])
+        ) {
+          indiceValido = true;
+        }
+      }
+
+      quemRecebe = lista[indiceSorteado];
+      nomesSorteadosLista.push(quemRecebe);
+    } else {
+      for (let j = 0; j < lista.length; j++) {
+        if (!nomesSorteadosLista.includes(lista[j]) && lista[j] !== quemTira) {
+          quemRecebe = lista[j];
+          break;
+        }
+      }
+    }
+    elementoListaSorteio.innerHTML += `${quemTira} → ${quemRecebe} </br>`;
+  }
+}
+
+function reiniciar() {
+  let elementos = capturandoElementos();
+
+  elementos.listaAmigos.innerHTML = [];
+  elementos.listaSorteio.innerHTML = [];
+  elementos.nomeAmigo.innerHTML = "";
+}
+
+function embaralha(lista) {
+  for (let indice = lista.length; indice; indice--) {
+    const indiceAleatorio = Math.floor(Math.random() * indice);
+
+    // guarda de um índice aleatório da lista
+    const elemento = lista[indice - 1];
+
+    lista[indice - 1] = lista[indiceAleatorio];
+
+    lista[indiceAleatorio] = elemento;
   }
 }
