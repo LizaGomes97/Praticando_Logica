@@ -1,23 +1,7 @@
-<<<<<<< HEAD
 let lista = [];
 let nomesSorteadosLista = [];
 
 function capturandoElementos() {
-=======
-//inserir nomes de amigos no campo inserir amigo
-// nome é adicionado a lista amigos incluidos apos clicar no botao adicionar
-
-//botao sortear gera uma relaçao de quem vai dar presente a quem
-//cada pessoa so pode ser tirada uma vez
-
-//botao reiniciar recomeça o programa
-
-//lista de amigos
-let lista = [];
-
-function capturandoElementos() {
-  //campo input nome do amigo
->>>>>>> main
   let nomeAmigo = document.querySelector("#nome-amigo");
   let listaAmigos = document.querySelector("#lista-amigos");
 
@@ -37,27 +21,18 @@ function adicionar() {
   elementos.listaAmigos.innerHTML = "";
 
   if (nomeAmigo != "") {
-<<<<<<< HEAD
     if (!lista.includes(capitalizar(nomeAmigo))) {
       lista.push(capitalizar(nomeAmigo));
     } else {
       alert("Esse nome ja esta na lista de sorteio");
     }
-=======
-    lista.push(nomeAmigo);
-    console.log(lista);
->>>>>>> main
   } else {
     alert("Por favor, digite um nome");
   }
 
   elementos.nomeAmigo.value = "";
 
-<<<<<<< HEAD
   atualizarListaNomes(elementos.listaAmigos);
-  // for (i = 0; i < lista.length; i++) {
-  //   elementos.listaAmigos.innerHTML = lista.join(", ");
-  // }
 }
 
 function atualizarListaNomes(elementoLista) {
@@ -147,9 +122,3 @@ function embaralha(lista) {
 function capitalizar(texto) {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
-=======
-  for (i = 0; i < lista.length; i++) {
-    elementos.listaAmigos.innerHTML = lista.join(", ");
-  }
-}
->>>>>>> main
