@@ -81,18 +81,19 @@ function sortear() {
   elementos.listaSorteio.innerHTML = [];
 
   let listaSorteio = elementos.listaSorteio;
-  console.log(lista);
-
   embaralha(lista);
-  console.log("lista embaralhada", lista);
 
-  for (let i = 0; i < lista.length; i++) {
-    if (i == lista.length - 1) {
-      listaSorteio.innerHTML =
-        listaSorteio.innerHTML + lista[i] + "→" + lista[0] + "</br>";
-    } else {
-      listaSorteio.innerHTML =
-        listaSorteio.innerHTML + lista[i] + "→" + lista[i + 1] + "</br>";
+  if (lista.length < 3) {
+    alert("Informe ao menos 3 nomes para sorteio");
+  } else {
+    for (let i = 0; i < lista.length; i++) {
+      if (i == lista.length - 1) {
+        listaSorteio.innerHTML =
+          listaSorteio.innerHTML + lista[i] + "→" + lista[0] + "</br>";
+      } else {
+        listaSorteio.innerHTML =
+          listaSorteio.innerHTML + lista[i] + "→" + lista[i + 1] + "</br>";
+      }
     }
   }
 }
