@@ -21,74 +21,91 @@ function adicionar() {
   elementos.listaAmigos.innerHTML = "";
 
   if (nomeAmigo != "") {
-    lista.push(nomeAmigo);
+    if (!lista.includes(capitalizar(nomeAmigo))) {
+      lista.push(capitalizar(nomeAmigo));
+    } else {
+      alert("Esse nome ja esta na lista de sorteio");
+    }
   } else {
     alert("Por favor, digite um nome");
   }
 
   elementos.nomeAmigo.value = "";
 
-  for (i = 0; i < lista.length; i++) {
-    elementos.listaAmigos.innerHTML = lista.join(", ");
+  atualizarListaNomes(elementos.listaAmigos);
+  // for (i = 0; i < lista.length; i++) {
+  //   elementos.listaAmigos.innerHTML = lista.join(", ");
+  // }
+}
+
+function atualizarListaNomes(elementoLista) {
+  // Limpar a lista visual
+  elementoLista.innerHTML = "";
+
+  // Para cada nome, criar um elemento span clicável
+  for (let i = 0; i < lista.length; i++) {
+    // Criar elemento span para o nome
+    let spanNome = document.createElement("span");
+    spanNome.textContent = lista[i];
+    spanNome.classList.add("nome-amigo"); // Adiciona uma classe para estilização
+
+    // Tornar o elemento clicável
+    spanNome.addEventListener("click", function () {
+      removerNome(i); // Passa o índice do nome a ser removido
+    });
+
+    // Adicionar o span à lista
+    elementoLista.appendChild(spanNome);
+
+    // Adicionar vírgula se não for o último elemento
+    if (i < lista.length - 1) {
+      elementoLista.appendChild(document.createTextNode(", "));
+    }
+  }
+}
+
+function removerNome(indice) {
+  // Confirmar a remoção
+  if (confirm(`Deseja remover "${lista[indice]}" da lista?`)) {
+    // Remover o nome do array
+    lista.splice(indice, 1);
+
+    // Atualizar a exibição
+    let elementos = capturandoElementos();
+    atualizarListaNomes(elementos.listaAmigos);
   }
 }
 
 function sortear() {
+  let elementos = capturandoElementos();
+  elementos.listaSorteio.innerHTML = [];
+
+  let listaSorteio = elementos.listaSorteio;
   console.log(lista);
 
   embaralha(lista);
   console.log("lista embaralhada", lista);
 
-  let elementos = capturandoElementos();
-  let elementoListaSorteio = elementos.listaSorteio;
-
-  elementoListaSorteio.innerHTML = "";
-  nomesSorteadosLista = [];
-
-  if (lista.length < 3) {
-    alert("Insira ao menos 3 nomes para o sorteio");
-    return;
-  }
-
   for (let i = 0; i < lista.length; i++) {
-    let quemTira = lista[i];
-    let quemRecebe;
-
-    if (i < lista.length - 1) {
-      let indiceValido = false;
-      let indiceSorteado;
-
-      while (!indiceValido) {
-        indiceSorteado = Math.floor(Math.random() * lista.length);
-
-        if (
-          indiceSorteado !== i &&
-          !nomesSorteadosLista.includes(lista[indiceSorteado])
-        ) {
-          indiceValido = true;
-        }
-      }
-
-      quemRecebe = lista[indiceSorteado];
-      nomesSorteadosLista.push(quemRecebe);
+    if (i == lista.length - 1) {
+      listaSorteio.innerHTML =
+        listaSorteio.innerHTML + lista[i] + "→" + lista[0] + "</br>";
     } else {
-      for (let j = 0; j < lista.length; j++) {
-        if (!nomesSorteadosLista.includes(lista[j]) && lista[j] !== quemTira) {
-          quemRecebe = lista[j];
-          break;
-        }
-      }
+      listaSorteio.innerHTML =
+        listaSorteio.innerHTML + lista[i] + "→" + lista[i + 1] + "</br>";
     }
-    elementoListaSorteio.innerHTML += `${quemTira} → ${quemRecebe} </br>`;
   }
 }
 
 function reiniciar() {
   let elementos = capturandoElementos();
 
-  elementos.listaAmigos.innerHTML = [];
-  elementos.listaSorteio.innerHTML = [];
-  elementos.nomeAmigo.innerHTML = "";
+  elementos.listaAmigos.innerHTML = "";
+  elementos.listaSorteio.innerHTML = "";
+  elementos.nomeAmigo.value = "";
+
+  lista = [];
+  nomesSorteadosLista = [];
 }
 
 function embaralha(lista) {
@@ -102,4 +119,8 @@ function embaralha(lista) {
 
     lista[indiceAleatorio] = elemento;
   }
+}
+
+function capitalizar(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
